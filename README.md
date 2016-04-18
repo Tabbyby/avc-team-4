@@ -10,7 +10,7 @@ This is the gitHub group for our project group on the AVC 2016
 
 - [ ] Tabby: Write Code to drive in a straight line
 
-- [ ] Tabby: Write out a generaly plan for the code we'll need
+- [ ] Tabby: Write out a general plan for the code we'll need
 
 - [ ] Init: Design Chassis 
 
