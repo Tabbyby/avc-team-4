@@ -2,8 +2,13 @@
 This is the gitHub group for our project group on the AVC 2016
 
 Week 1 Checklist
+
 Angus -
+
 Tabby - 
+
 Init - 
+
 Ishaq - 
+
 Christy - 
