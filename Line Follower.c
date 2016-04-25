@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <time.h>
+
+\\these load specific methods from the ENGR101 library
+extern "C" int init(int d_lev);
+extern "C" int take_picture();
+extern "C" char get_pixel(int row,int col,int colour);
+extern "C" int Sleep(int sec, int usec);
+
+int main(){
+      //This sets up the RPi hardware and ensures
+      //everything is working correctly
+    init(0);
+    char c;
+    while(true){
+       //Take picture with camera
+        take_picture()
+        int leftsum = 0;
+        int rightsum = 0;
+        int sum = 0
+        int i;
+        //sum for whiteness on left side of picture
+        for(i=0, i<160, i++){
+            //get pixel "whiteness" from image (320x240)
+            w = get_pixel(120,i,3);
+            leftsum = leftsum + i*w;}
+          //sum for whiteness on right side of picture
+          for(i=160, i<320, i++){
+              //get pixel "whiteness" from image (320x240)
+              w = get_pixel(120,i,3);
+              rightsum = rightsum + i*w;}
+          //sum difference of both sides of image
+          sum = rightsum - leftsum
+          //This would work for an ideal situation
+          //if the left side sum is greater than the right
+          //turn left
+          if (sum < 0){
+            turnleft();
+          //if the right side sum is greater than the left
+          //turn right
+          }else if (sum > 0){
+            turnRight();
+          //if both sides are equal continue forward
+        }else if (sum == 0){
+            moveForward();
+          }
+
+       //Waits for 0.1 seconds (100000 microseconds)
+       Sleep(0,100000);
+       }
+return 0;}
