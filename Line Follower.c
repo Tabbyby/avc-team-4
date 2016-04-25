@@ -12,7 +12,16 @@ int main(){
       //everything is working correctly
     init(0);
     char c;
-    while(true){
+      //check initial and final positions of line
+    for(i=0, i<320, i++){
+        //get pixel "whiteness" from image (320x240)
+        w = get_pixel(120,i,3);
+        if(w<50){
+          w=0;
+        }
+    sum = sum + i*w;}
+    //keep going till line finished or no line
+    while(sum != 0){
        //Take picture with camera
         take_picture()
         int leftsum = 0;
