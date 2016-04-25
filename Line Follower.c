@@ -18,16 +18,24 @@ int main(){
         int leftsum = 0;
         int rightsum = 0;
         int sum = 0
-        int i;
+        int i = 0;
         //sum for whiteness on left side of picture
         for(i=0, i<160, i++){
             //get pixel "whiteness" from image (320x240)
             w = get_pixel(120,i,3);
+              //ranging black values
+              if(w<50){
+              w=0;
+              }
             leftsum = leftsum + i*w;}
           //sum for whiteness on right side of picture
           for(i=160, i<320, i++){
               //get pixel "whiteness" from image (320x240)
               w = get_pixel(120,i,3);
+              //ranging black values
+              if(w<50){
+              w=0;
+              }
               rightsum = rightsum + i*w;}
           //sum difference of both sides of image
           sum = rightsum - leftsum
