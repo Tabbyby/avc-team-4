@@ -1,22 +1,22 @@
 # avc-team-4
 This is the gitHub group for our project group on the AVC 2016
 
-##Week 1 Checklist
+###Week 1 Checklist
 
 
-- [ ] Angus: Sort out inital documentation 
+- [x] Angus: Sort out inital documentation 
 
-- [ ] Angus: Assist 3D modeling research
+- [x] Angus: Assist 3D modeling research
 
-- [ ] Tabby: Write Code to drive in a straight line
+- [x] Tabby: Write Code to drive in a straight line
 
-- [ ] Tabby: Write out a general plan for the code we'll need
+- [x] Tabby: Write out a general plan for the code we'll need
 
-- [ ] Init: Design Chassis 
+- [x] Init: Design Chassis 
 
-- [ ] Inti: Check everyone has signed the team agreement
+- [x] Inti: Check everyone has signed the team agreement
 
-- [ ] Ishaq: Research code for the camera (colour sensing and line following)
+- [x] Ishaq: Research code for the camera (colour sensing and line following)
 
 - [ ] Christy: Design Chassis
 
