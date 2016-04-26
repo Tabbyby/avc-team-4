@@ -6,6 +6,9 @@ extern "C" int init(int d_lev);
 extern "C" int take_picture();
 extern "C" char get_pixel(int row,int col,int colour);
 extern "C" int Sleep(int sec, int usec);
+extern "C" int ReadAnalog(int ch_adc);
+//getting the radings from the analog in the front
+int front = ReadAnalog(0);
 
 int main(){
       //This sets up the RPi hardware and ensures
@@ -21,7 +24,15 @@ int main(){
         }
     sum = sum + i*w;}
     //keep going till line finished or no line
-    while(sum != 0){
+    while(true){
+          //breaks out if there is a wall and no line
+          if (front>0 && sum<50){
+                break;
+          }else if(front>0){ //if there is a wall and line open gate
+                openGate();
+          }
+          
+          
        //Take picture with camera
         take_picture()
         int leftsum = 0;
