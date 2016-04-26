@@ -25,12 +25,7 @@ int main(){
     sum = sum + i*w;}
     //keep going till line finished or no line
     while(true){
-          //breaks out if there is a wall and no line
-          if (front>0 && sum<50){
-                break;
-          }else if(front>0){ //if there is a wall and line open gate
-                openGate();
-          }
+        
           
           
        //Take picture with camera
@@ -71,6 +66,13 @@ int main(){
           //if both sides are equal continue forward
         }else if (sum == 0){
             moveForward();
+          }
+          
+            //breaks out if there is a wall and no line
+          if (front>0 && leftsum==0 && rigthsum==0){
+                break;
+          }else if(front>0){ //if there is a wall and line open gate
+                openGate();
           }
 
        //Waits for 0.1 seconds (100000 microseconds)
