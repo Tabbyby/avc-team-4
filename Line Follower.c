@@ -9,6 +9,10 @@ extern "C" int Sleep(int sec, int usec);
 extern "C" int ReadAnalog(int ch_adc);
 //getting the radings from the analog in the front
 int front = ReadAnalog(0);
+//network commands
+extern "C" int connect_to_server( char server_addr[15],int port);
+extern "C" int send_to_server(char message[24]);
+extern "C" int receive_from_server(char message[24]);
 
 int main(){
       //This sets up the RPi hardware and ensures
@@ -72,7 +76,13 @@ int main(){
           if (front>0 && leftsum==0 && rigthsum==0){
                 break;
           }else if(front>0){ //if there is a wall and line open gate
-                openGate();
+                //connects to server at IP ADDRESS, PORT
+                connect_to_server(IP ADDRESS, PORT);
+                //sends MESSAGE to server
+                send_to_server(MESSAGE);
+                //recieves from server
+                char message[24];
+                message = recieve_from_server(MESSAGE);
           }
 
        //Waits for 0.1 seconds (100000 microseconds)
