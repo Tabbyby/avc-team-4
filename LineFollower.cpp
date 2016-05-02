@@ -25,44 +25,49 @@ int main(){
         //get pixel "whiteness" from image (320x240)
         w = get_pixel(120,i,3);
         if(w<50){
-          w=0;
+            w=0;
         }else{
-          w=1;
+            w=1;
         }
     sum = sum + w;}
     //keep going till line finished or no line
+    
     while(true){
-        
-          
-          
        //Take picture with camera
-        take_picture()
-        int leftsum = 0;
-        int rightsum = 0;
-        int sum = 0
-        int i = 0;
-        //sum for whiteness on left side of picture
-        for(i=0, i<160, i++){
-            //get pixel "whiteness" from image (320x240)
-            w = get_pixel(120,i,3);
-              //ranging black values
-              if(w<50){
-              w=0;
-              }else{
-              w=1;
-              }           
- leftsum = leftsum +w;}
-          //sum for whiteness on right side of picture
-          for(i=160, i<320, i++){
-              //get pixel "whiteness" from image (320x240)
-              w = get_pixel(120,i,3);
-              //ranging black values
-              if(w<50){
-              w=0;
-              }else{
-              w=1;
-              }            
-  rightsum = rightsum + w;}
+       take_picture();
+       int leftsum = 0;
+       int rightsum = 0;
+       int sum = 0
+       int i = 0;
+        
+       //sum for whiteness on left side of picture
+       for(i=0, i<160, i++){
+           //get pixel "whiteness" from image (320x240)
+           w = get_pixel(120,i,3);
+             //ranging black values
+             if(w<50){
+                  w=0;
+             }else{
+                  w=1;
+             }
+            leftsum = leftsum +w;
+             
+       }
+       
+       //sum for whiteness on right side of picture
+       for(i=160, i<320, i++){
+             //get pixel "whiteness" from image (320x240)
+             w = get_pixel(120,i,3);
+             //ranging black values
+             if(w<50){
+                  w=0;
+             }else{
+                  w=1;
+             }
+             rightsum = rightsum + w;
+             
+       }
+       
           //sum difference of both sides of image
           sum = rightsum - leftsum
           //This would work for an ideal situation
