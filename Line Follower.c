@@ -7,7 +7,8 @@ extern "C" int take_picture();
 extern "C" char get_pixel(int row,int col,int colour);
 extern "C" int Sleep(int sec, int usec);
 extern "C" int ReadAnalog(int ch_adc);
-//getting the radings from the analog in the front
+//getting the readings from the analog in the front
+extern "C" int set_motor(int motor , int dir, int speed ); //
 int front = ReadAnalog(0);
 
 int main(){
@@ -58,14 +59,17 @@ int main(){
           //if the left side sum is greater than the right
           //turn left
           if (sum < 0){
-            turnleft();
+            set_motor(1, 1, 60) //left wheel
+            set_motor(2, 2, 120) //right wheel
           //if the right side sum is greater than the left
           //turn right
           }else if (sum > 0){
-            turnRight();
+            set_motor(1, 1, 120) 
+            set_motor(2, 2, 60)
           //if both sides are equal continue forward
         }else if (sum == 0){
-            moveForward();
+            set_motor(1, 1, 120) 
+            set_motor(2, 2, 120) //turn both wheels at the same speed to move it forward
           }
           
             //breaks out if there is a wall and no line
