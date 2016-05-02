@@ -33,9 +33,11 @@ int main(){
         if(w<50){
          w=0;
 
+        }else{
+        w=1;
         }
 
-    sum = sum + i*w;}*/
+    sum = sum +w;}*/
 
     //keep going till line finished or no line
     while(true){
@@ -54,8 +56,10 @@ int main(){
               if(w<50){
 	printf("RIGHT \n");
               w=0;
+              }else{
+              w=1;
               }
-            leftsum = leftsum + i*w;}
+            leftsum = leftsum +w;}
           //sum for whiteness on right side of picture
           for(i=160; i<320; i++){
               //get pixel "whiteness" from image (320x240)
@@ -64,8 +68,10 @@ int main(){
               if(w<50){
 	printf("LEFT 2\n");
               w=0;
+              }else{
+              w=1;
               }
-              rightsum = rightsum + i*w;}
+              rightsum = rightsum +w;}
           //sum difference of both sides of image
           sum = rightsum - leftsum;
           //This would work for an ideal situation
