@@ -22,6 +22,8 @@ int main(){
         w = get_pixel(120,i,3);
         if(w<50){
           w=0;
+        }else{
+          w=1;
         }
     sum = sum + i*w;}
     //keep going till line finished or no line
@@ -42,8 +44,10 @@ int main(){
               //ranging black values
               if(w<50){
               w=0;
-              }
-            leftsum = leftsum + i*w;}
+              }else{
+              w=1;
+              }           
+ leftsum = leftsum +w;}
           //sum for whiteness on right side of picture
           for(i=160, i<320, i++){
               //get pixel "whiteness" from image (320x240)
@@ -51,8 +55,10 @@ int main(){
               //ranging black values
               if(w<50){
               w=0;
-              }
-              rightsum = rightsum + i*w;}
+              }else{
+              w=1;
+              }            
+  rightsum = rightsum + w;}
           //sum difference of both sides of image
           sum = rightsum - leftsum
           //This would work for an ideal situation
