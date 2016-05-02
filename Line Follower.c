@@ -82,7 +82,7 @@ int main(){
                 send_to_server("Please");
                 //recieves from server
                 char message[24];
-                message = recieve_from_server();
+                recieve_from_server(message);
                 //sends password back to server
                 send_to_server(message);
           }
