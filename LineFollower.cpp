@@ -25,7 +25,7 @@ int main(){
         }else{
           w=1;
         }
-    sum = sum + i*w;}
+    sum = sum + w;}
     //keep going till line finished or no line
     while(true){
         
