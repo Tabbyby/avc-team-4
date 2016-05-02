@@ -77,12 +77,14 @@ int main(){
                 break;
           }else if(front>0){ //if there is a wall and line open gate
                 //connects to server at IP ADDRESS, PORT
-                connect_to_server(130.195.6.196, 22);
+                connect_to_server(130.195.6.196, 1024);
                 //sends MESSAGE to server
-                send_to_server("Hello server");
+                send_to_server("Please");
                 //recieves from server
                 char message[24];
                 message = recieve_from_server("my-password");
+                
+                send_to_server(message);
           }
 
        //Waits for 0.1 seconds (100000 microseconds)
