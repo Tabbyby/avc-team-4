@@ -88,7 +88,7 @@ int main(){
        }
           
        //breaks out if there is a wall and no line
-       if (front>0 && leftsum==0 && rigthsum==0){
+       if (front>0 && leftsum==0 && rightsum==0){
              break;
        }else if(front>0){ //if there is a wall and line open gate
              //connects to server at IP ADDRESS, PORT
