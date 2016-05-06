@@ -8,7 +8,9 @@ extern "C" int send_to_server(char message[24]);
 extern "C" int receive_from_server(char message[24]);
 
 Network_Gate(){
+	//initialises hardware
 	init(0);
+	//connects to server at IP ADDRESS, PORT
 	connect_to_server(130.195.6.196, 1024);
 	//sends MESSAGE to server
 	send_to_server("Please");
