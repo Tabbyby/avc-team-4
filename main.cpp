@@ -83,17 +83,20 @@ int main(){
 	printf("TURNLRFT 3\n");
             set_motor(1, 1, 60); //left wheel
             set_motor(2, 2, 120); //right wheel
+            Sleep (0 ,500000);
           //if the right side sum is greater than the left
           //turn right
           }else if (sum > 0){
 	printf("TURNRIGHT 4\n");
             set_motor(1, 1, 120);
             set_motor(2, 2, 60);
+            Sleep (0 ,500000);
           //if both sides are equal continue forward
         }else if (sum == 0){
 	printf("STRAIGHT \n");
             set_motor(1, 1, 120);
             set_motor(2, 2, 120) ;//turn both wheels at the same speed to move it forward
+            Sleep (0 ,500000);
           }
 
             //breaks out if there is a wall and no line
