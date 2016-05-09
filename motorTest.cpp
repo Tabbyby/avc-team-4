@@ -7,7 +7,7 @@ extern "C" int set_motor(int motor , int dir, int speed );
 
 int main (){
 
-  inti(0);
+  init(0);
   
   while(true){
     set_motor(1, 1, 60); //left wheel
