@@ -7,7 +7,7 @@ extern "C" int take_picture();
 extern "C" char get_pixel(int row,int col,int colour);
 extern "C" int Sleep(int sec, int usec);
 //extern "C" int ReadAnalog(int ch_adc);
-extern "C" int set_motor(int motor , int dir, int speed ); 
+extern "C" int set_motor(int motor , int speed ); 
 //network commands
 extern "C" int connect_to_server( char server_addr[15],int port);
 extern "C" int send_to_server(char message[24]);
@@ -46,6 +46,9 @@ int main(){
 	*/
 	//keep going till line finished or no line
 	while(true){
+		sum = 0;
+		leftsum = 0;
+		rightsum = 0;
 		//Take picture with camera
 		take_picture();
 		
@@ -54,8 +57,8 @@ int main(){
 			//get pixel "whiteness" from image (320x240)
 			w = get_pixel(i,120,3);
 			//ranging black values
-			if(w<50){
-				printf("RIGHT \n");
+			if(w<200){
+				//printf("RIGHT \n");
 				w=0;
 				
 			}else{
@@ -69,8 +72,8 @@ int main(){
 		for(i=160; i<320; i++){
 			//get pixel "whiteness" from image (320x240)
 			w = get_pixel(i,120,3);
-			if(w<50){
-				printf("LEFT 2\n");
+			if(w<200){
+				//printf("LEFT 2\n");
 				w=0;
 				
 			}else{
@@ -85,24 +88,24 @@ int main(){
 		//This would work for an ideal situation
 		//if the left side sum is greater than the right
 		//turn left
-		if (sum < 0){
+		if (sum < -10){
 			printf("TURNLRFT 3\n");
-			set_motor(1, 1, 60); //left wheel
-			set_motor(2, 2, 120); //right wheel
-			Sleep (0 ,500000);
+			set_motor(1, 60); //left wheel
+			set_motor(2, 120); //right wheel
+			Sleep (0 , 1000);
 			//if the right side sum is greater than the left
 			//turn right
-		}else if (sum > 0){
+		}else if (sum > 10){
 			printf("TURNRIGHT 4\n");
 			set_motor(1, 1, 120);
 			set_motor(2, 2, 60);
-			Sleep (0 ,500000);
+			Sleep (0 ,1000);
 			//if both sides are equal continue forward
-		}else if (sum == 0){
+		}else if (sum > -10 && sum < 10){
 			printf("STRAIGHT \n");
 			set_motor(1, 1, 120);
 			set_motor(2, 2, 120) ;//turn both wheels at the same speed to move it forward
-			Sleep (0 ,500000);
+			Sleep (0 ,1000);
 			
 		}
 		//breaks out if there is a wall and no line
