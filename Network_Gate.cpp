@@ -8,6 +8,9 @@ extern "C" int send_to_server(char message[24]);
 extern "C" int receive_from_server(char message[24]);
 
 int main(){
+	//message will hold the password received from the server
+	char message[24];
+	
 	//initialises hardware
 	init(0);
 	//connects to server at IP ADDRESS, PORT
@@ -15,7 +18,6 @@ int main(){
 	//sends MESSAGE to server
 	send_to_server("Please");
 	//recieves from server
-	char message[24];
 	receive_from_server(message);
 	//sends password back to server
 	send_to_server(message);
