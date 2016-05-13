@@ -6,6 +6,7 @@ double kd =1.1;
 double error=0;
 double errorSum=0;
 double prevError;
+double actionSetter=0;
 double currentError=0;
 double propErrorSignal=0;
 double difErrorSignal=0;
@@ -35,13 +36,6 @@ int main(){
 	//updated the total error
 	errorSum+=currentError;
 	//checks what error is bigeer to set the speed
-	if(difErrorSignal>propErrorSignal||inteErrorSignal>propErrorSignal){
-		if(difErrorSignal>inteErrorSignal){
-			SPEED=difErrorsignal*speedPercentage;
-		}else{
-			SPEED=inteErrorsignal*speedPercentage;
-		}else{
-			SPEED=255;
-		}
-	}
+	actionSetter=difErrorSignal+propErrorSignal+inteErrorsignal;
+	
 }
