@@ -22,7 +22,7 @@ extern "C" int take_picture();
 extern "C" char get_pixel(int row,int col,int colour);
 extern "C" int Sleep(int sec, int usec);
 //extern "C" int ReadAnalog(int ch_adc);
-extern "C" int set_motor(int motor , int speed ); 
+extern "C" int set_motor(int motor , int speed );
 //network commands
 extern "C" int connect_to_server( char server_addr[15],int port);
 extern "C" int send_to_server(char message[24]);
@@ -47,9 +47,10 @@ double currentError=0;
 double propErrorSignal=0;
 double difErrorSignal=0;
 double inteErrorSignal=0;
-double time=0.1;
+double Time=0.1;
 //long currentTime;
 double maxSpeed=50;
+double minSpeed=1;
 int LeftSPEED=0;
 int RightSPEED=0;
 
@@ -63,17 +64,17 @@ int main(){
 	for(i=0; i<320; i++){
 	//get pixel "whiteness" from image (320x240)
 		w = get_pixel(120,i,3);
-		
+
 		if(w<50){
 			w=0;
-			
+
 		}else{
 			w=1;
-			
+
 		}
-		
+
 		sum = sum +w;
-		
+
 	}
 	*/
 	//keep going till line finished or no line
@@ -82,10 +83,10 @@ int main(){
 		leftsum = 0;
 		rightsum = 0;
 		//sets the prev error (before the loop)
-		preverror=error;
+		double preverror=error;
 		//Take picture with camera
 		take_picture();
-		
+
 		//sum for whiteness on left side of picture
 		for(i=0;i<160; i++){
 			//get pixel "whiteness" from image (320x240)
@@ -94,13 +95,13 @@ int main(){
 			if(w<200){
 				//printf("RIGHT \n");
 				w=0;
-				
+
 			}else{
 				w=1;
-				
+
 			}
 			leftsum = leftsum +w;
-			
+
 		}
 		//sum for whiteness on right side of picture
 		for(i=160; i<320; i++){
@@ -109,30 +110,30 @@ int main(){
 			if(w<200){
 				//printf("LEFT 2\n");
 				w=0;
-				
+
 			}else{
 				w=1;
-				
+
 			}
 			rightsum = rightsum +w;
-			
+
 		}
 		//sum difference of both sides of image
 		sum = rightsum - leftsum;
 		//sets error(after the loop)
 		error=sum;
 		//sets current error
-		currentErro+=error;	
+		currentError+=error;
 			//gets proportional erros signal
 		propErrorSignal = error*kp;
 		//gets diferential error signal
-		difErrorSignal=((error-prevError)/time)*kd;
+		difErrorSignal=((error-prevError)/Time)*kd;
 		//gets the integral error signal
 		inteErrorSignal=((currentError)*ki);
 		//updated the total error
 		errorSum+=currentError;
 		//checks what error is bigeer to set the speed
-		actionSetter=difErrorSignal+propErrorSignal+inteErrorsignal;
+		actionSetter=difErrorSignal+propErrorSignal+inteErrorSignal;
 		LeftSPEED=minSpeed+actionSetter;
 	        RightSPEED=minSpeed-actionSetter;
 		//This would work for an ideal situation
@@ -157,13 +158,13 @@ int main(){
 			//set_motor(1, 1, SPEED);
 			//set_motor(2, 2, SPEED) ;//turn both wheels at the same speed to move it forward
 			//Sleep (0 ,1000);
-			
+
 		//}
 		//breaks out if there is a wall and no line
 		/*
 		if (front>0 && leftsum==0 && rightsum==0){
 			break;
-			
+
 		}else if(front>0){ //if there is a wall and line open gate
 			//connects to server at IP ADDRESS, PORT
 			connect_to_server(130.195.6.196, 1024);
@@ -174,14 +175,15 @@ int main(){
 			recieve_from_server(message);
 			//sends password back to server
 			send_to_server(message);
-			
+
 		}
 		*/
-		
+
 		//Waits for 0.1 seconds (100000 microseconds)
 		Sleep(0,100000);
-		
+
 	}
 	return 0;
-	
+
 }
+
