@@ -37,8 +37,8 @@ int rightsum=0;
 int w=0;
 
 double ki=0;
-double kp=0.0033;
-double kd =0;
+double kp=0.5;
+double kd =0.008;
 double error=0;
 double errorSum=0;
 double prevError=0;
@@ -49,8 +49,7 @@ double difErrorSignal=0;
 double inteErrorSignal=0;
 double Time=0.1;
 //long currentTime;
-double maxSpeed=50;
-double minSpeed=1;
+double minSpeed=50;
 int LeftSPEED=0;
 int RightSPEED=0;
 
@@ -58,7 +57,7 @@ int main(){
 	//This sets up the RPi hardware and ensures
 	//everything is working correctly
 	init(0);
-	char c;
+	
 	//check initial and final positions of line
 	/*
 	for(i=0; i<320; i++){
@@ -125,7 +124,7 @@ int main(){
 		//sets current error
 		currentError+=error;
 			//gets proportional erros signal
-		propErrorSignal = error*kp;
+		propErrorSignal = sum*kp;
 		//gets diferential error signal
 		difErrorSignal=((error-prevError)/Time)*kd;
 		//gets the integral error signal
@@ -139,24 +138,28 @@ int main(){
 		//This would work for an ideal situation
 		//if the left side sum is greater than the right
 		//turn left
-		//if (actionSetter < -10){
+		//if (sum < -1){
 			//printf("TURNLRFT 3\n");
 			//sets the motor to the PID speed
-			set_motor(1, LeftSPEED); //left wheel
-			set_motor(2, RightSPEED); //right wheel
-			Sleep (0 , 1000);
+			//set_motor(1,- 30); //left wheel
+			//set_motor(2,- 100); //right wheel
+			//Sleep(0,2000);
+			set_motor(1,LeftSPEED);
+			set_motor(2,RightSPEED);
+			Sleep(0,1000);
+			
 			//if the right side sum is greater than the left
 			//turn right
-		//}else if (actionSetter > 10){
+		//}else if (sum > 1){
 			//printf("TURNRIGHT 4\n");
-			//set_motor(1, 1, LeftSPEED);
-			//set_motor(2, 2, RightSPEED);
-			//Sleep (0 ,1000);
+			//set_motor(1, -100);
+			//set_motor(2,-30);
+			//Sleep (0 ,2000);
 			//if both sides are equal continue forward
-		//}else if (actionSetter > -10 && actionSetter < 10){
+		//}else if (sum > -1 && sum < 1){
 			//printf("STRAIGHT \n");
-			//set_motor(1, 1, SPEED);
-			//set_motor(2, 2, SPEED) ;//turn both wheels at the same speed to move it forward
+			//set_motor(1, -60);
+			//set_motor(2, -60) ;//turn both wheels at the same speed to move it forward
 			//Sleep (0 ,1000);
 
 		//}
