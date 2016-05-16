@@ -58,24 +58,6 @@ int main(){
 	//everything is working correctly
 	init(0);
 	
-	//check initial and final positions of line
-	/*
-	for(i=0; i<320; i++){
-	//get pixel "whiteness" from image (320x240)
-		w = get_pixel(120,i,3);
-
-		if(w<50){
-			w=0;
-
-		}else{
-			w=1;
-
-		}
-
-		sum = sum +w;
-
-	}
-	*/
 	//keep going till line finished or no line
 	while(true){
 		sum = 0;
@@ -91,30 +73,20 @@ int main(){
 			//get pixel "whiteness" from image (320x240)
 			w = get_pixel(i,120,3);
 			//ranging black values
-			if(w<200){
-				//printf("RIGHT \n");
-				w=0;
-
-			}else{
-				w=1;
+			if(w>200){
+				leftsum++;
 
 			}
-			leftsum = leftsum +w;
 
 		}
 		//sum for whiteness on right side of picture
 		for(i=160; i<320; i++){
 			//get pixel "whiteness" from image (320x240)
 			w = get_pixel(i,120,3);
-			if(w<200){
-				//printf("LEFT 2\n");
-				w=0;
-
-			}else{
-				w=1;
+			if(w>200){
+				rightsum++;
 
 			}
-			rightsum = rightsum +w;
 
 		}
 		//sum difference of both sides of image
