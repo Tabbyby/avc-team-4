@@ -73,7 +73,6 @@ int main(){
 		}
 		
 		//Integral Signal
-		//define integral signal
 		sumError += avError;
 		integral = sumError*sleepTime;
 		intSignal = (integral/maxI)*Ki;
