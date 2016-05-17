@@ -64,6 +64,7 @@ int main(){
 		
 		
 		//Proportional Signal
+		if(couter!=0){
 		avError = error/counter;
 		propSignal = (avError/maxP)*Kp;
 		
@@ -101,6 +102,12 @@ int main(){
 		set_motor(1, ((maxSpeed - (Kp + Ki + Kd)) - (propSignal + IntSignal + DerSignal));
 		//should be left wheel
 		set_motor(2, ((maxSpeed - (Kp + Ki + Kd)) + (propSignal + IntSignal + DerSignal));
+		}else{
+		//turns until line is found.
+		set_motor(1, -40);
+		set_motor(2, 40);
+		}
+		}
 
 	}
 	return 0;
