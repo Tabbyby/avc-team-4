@@ -15,8 +15,8 @@ extern "C" int receive_from_server(char message[24]);
 
 
 //Constants
-int maxSpeed = 200;
-int Kp = 50;
+int maxSpeed = 90;
+int Kp = 40;
 double maxP = 160;
 int Ki = 0;
 double maxI = 10;
@@ -52,7 +52,7 @@ int main(){
 		error = 0;
 		for (int i=0; i<320; i++){
 			w = get_pixel(i, 120, 3);
-			if(w > 200){
+			if(w > 100){
 				error += (i-160);
 				counter++;
 				
@@ -104,7 +104,7 @@ int main(){
 		set_motor(2, ((maxSpeed - (Kp + Ki + Kd)) + (propSignal + IntSignal + DerSignal));
 		}else{
 		//turns until line is found.
-		set_motor(1, -40);
+		set_motor(1, -45);
 		set_motor(2, 40);
 		}
 		}
