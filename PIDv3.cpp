@@ -87,10 +87,10 @@ int main(){
 		
 		
 		//when it reaches the secount quadrant
-		if(black>310){
+		if((errorR+Errol)>310){
 		First=0;
 		}
-		if((errorR>5||erroorL>5)&&First==1){
+		if((errorR+erroorL!=0)&&First==1){
 		//Proportional Signal
 		propSignal = (error)*Kp;
 		
@@ -113,7 +113,7 @@ int main(){
 		set_motor(2, 40);
 		
 		//when it reaches the intersections
-		}else if((error>-20)||(error<20)){
+		}else if((error>-20)&&(error<20)){
 				//Proportional Signal
 		propSignal = (error)*Kp;
 		
