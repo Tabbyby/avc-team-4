@@ -36,6 +36,7 @@ double propSignal;
 int sumError;		//the sum of all previous errors
 
 double derSignal;	//the derivitive signal 
+double intSignal;
 
 int main(){
    	//This sets up the RPi hardware and ensures everything is working properly
@@ -84,13 +85,14 @@ int main(){
 	
 		//rests for 0.1 seconds
 		Sleep(0,1000);
+		int sum=errorR+ErroL;
 		
 		
 		//when it reaches the secount quadrant
-		if((errorR+Errol)>310){
+		if((sum)>310){
 		First=0;
 		}
-		if((errorR+erroorL!=0)&&First==1){
+		if((sum!=0)&&First==1){
 		//Proportional Signal
 		propSignal = (error)*Kp;
 		
@@ -107,7 +109,7 @@ int main(){
 		set_motor(1, ((minSpeed  - (propSignal + IntSignal + DerSignal));
 		// left wheel
 		set_motor(2, ((minSpeed + (propSignal + IntSignal + DerSignal));
-		}else if(first==1){
+		}else if(First==1){
 		//turns until line is found.
 		set_motor(1, -50);
 		set_motor(2, 40);
