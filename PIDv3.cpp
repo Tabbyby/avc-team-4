@@ -13,16 +13,7 @@ extern "C" int connect_to_server( char server_addr[15],int port);
 extern "C" int send_to_server(char message[24]);
 extern "C" int receive_from_server(char message[24]);
 
-//This sets up the RPi hardware and ensures everything is working properly
-	init(0);
 
-  connect_to_server("192.168.1.2", 1024);
-  //sends message
-   send_to_server("Please");
-   //receives message 
-   char message[24];
-   receive_from_server(message);
-   Sleep(0,3000);
 
 
 //Constants
@@ -36,7 +27,7 @@ int sleepTime = 0.1;
 //Variables
 int w;			//measure of whiteness
 int errorR;		//error Rigth
-int errorR;		//error Rigth
+int errorL;		//error left
 error;        //tot error
 int prevError=0;
 double propSignal;
@@ -46,14 +37,23 @@ int sumError;		//the sum of all previous errors
 double derSignal;	//the derivitive signal 
 
 int main(){
-	
+   	//This sets up the RPi hardware and ensures everything is working properly
+	 init(0);
+
+	 connect_to_server("192.168.1.2", 1024);
+	 //sends message
+   	send_to_server("Please");
+	 //receives message 
+	  char message[24];
+   	receive_from_server(message);
+   	Sleep(0,3000);
 
 	//infinite loop for testing purposes
 	while(true){
 		//Take picture with camera
 		take_picture();
 		
-		preError = error;
+		prevError = error;
 		error=0;
 		errorR=0;
 		errorL=0;
@@ -63,7 +63,7 @@ int main(){
 				errorL--;
 				
 			}
-			}
+		}
 			
 			for (int i=0; i<320; i++){
 			  w = get_pixel(i, 120, 3);
@@ -107,7 +107,7 @@ int main(){
 		set_motor(2, 40);
 		
 		//when it reaches the intersections
-		}else if(erroR>=((-error)-20)||erroR<=((-errorL)+20)){
+		}else if(erroR>=((-errorL)-20)||erroR<=((-errorL)+20)){
 				//Proportional Signal
 		propSignal = (error)*Kp;
 		
@@ -125,18 +125,20 @@ int main(){
 		// left wheel
 		set_motor(2, ((minSpeed + (propSignal + IntSignal + DerSignal));
 		}else if((-errorL)>errorR){
-		Sleep(0,1000);
-		set_motor(2, (50);
-		set_motor(1, (-50);
-		}else if(((-errorL)<errorR)){
-		  Sleep(0,1000);
-			set_motor(2, (50);
-		  set_motor(1, (-50);
-		}
+		//turns90 left
+		set_motor(2, (60);
+		set_motor(1, (-40);
+		}else if((-errorL)<errorR){
+			//turns90 right
+		set_motor(2, (-40);
+		set_motor(1, (60);
+		}else{
+		//finds the line again
 		set_motor(1, -60);
 		set_motor(2, 60);
 		}
-		}
+	
+		
 
 	}
 	return 0;
