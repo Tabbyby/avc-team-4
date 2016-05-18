@@ -25,7 +25,8 @@ int First=1;
 int sleepTime = 0.1;	
 
 //Variables
-int w;			//measure of whiteness
+int w;	
+int black;		//measure of whiteness
 int errorR;		//error Rigth
 int errorL;		//error left
 error;        //tot error
@@ -57,12 +58,15 @@ int main(){
 		error=0;
 		errorR=0;
 		errorL=0;
+                black=0;
 		for (int i=0; i<160; i++){
 			w = get_pixel(i, 120, 3);
 			if(w > 100){
-				errorL--;
+				errorL++;
 				
-			}
+			}else{
+                           black++;
+                        }
 		}
 			
 			for (int i=0; i<320; i++){
@@ -70,7 +74,9 @@ int main(){
 			  if(w > 100){
 				errorR++;
 				
-			}
+			}else{
+                           black++; 
+                        }
 			
 		}
 		
@@ -81,10 +87,10 @@ int main(){
 		
 		
 		//when it reaches the secount quadrant
-		if(error>310){
+		if(black>310){
 		First=0;
 		}
-		if(error!=0&&First==1){
+		if((errorR>5||erroorL>5)&&First==1){
 		//Proportional Signal
 		propSignal = (error)*Kp;
 		
@@ -107,7 +113,7 @@ int main(){
 		set_motor(2, 40);
 		
 		//when it reaches the intersections
-		}else if(erroR>=((-errorL)-20)||erroR<=((-errorL)+20)){
+		}else if((error>-20)||(error<20)){
 				//Proportional Signal
 		propSignal = (error)*Kp;
 		
@@ -124,11 +130,11 @@ int main(){
 		set_motor(1, ((minSpeed  - (propSignal + IntSignal + DerSignal));
 		// left wheel
 		set_motor(2, ((minSpeed + (propSignal + IntSignal + DerSignal));
-		}else if((-errorL)>errorR){
+		}else if((errorL)>errorR){
 		//turns90 left
 		set_motor(2, (60);
 		set_motor(1, (-40);
-		}else if((-errorL)<errorR){
+		}else if((errorL)<errorR){
 			//turns90 right
 		set_motor(2, (-40);
 		set_motor(1, (60);
