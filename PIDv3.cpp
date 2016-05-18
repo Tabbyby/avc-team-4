@@ -21,7 +21,7 @@ extern "C" int receive_from_server(char message[24]);
    send_to_server("Please");
    //receives message 
    char message[24];
-   receive_from_server(message); //this may be buggy!
+   receive_from_server(message);
    Sleep(0,3000);
 
 
