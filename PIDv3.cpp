@@ -14,10 +14,10 @@ extern "C" int send_to_server(char message[24]);
 extern "C" int receive_from_server(char message[24]);
 
 //Constants
-int minSpeed = 50;
-double Kp = 0.2;
-double Ki = 0;
-double Kd = 0.01;
+int minSpeed = 60;
+double Kp = 0.237;
+double Ki = 0.00;
+double Kd = 0.072;
 int First=1;
 double sleepTime = 0.1; 
 
@@ -90,7 +90,7 @@ while(true){
 
     //when it reaches the secount quadrant
     if((sum)>310){ //this could be made true when doing the first set of curves, causing it to break into the 
-       First=0;   //intersection code?
+       First=0;   //intersection code
 	minSpeed=80;
     }
     if((sum>10)&&First==1){
@@ -99,7 +99,7 @@ while(true){
         propSignal=(propSignal/160)*200;
         //Integral Signal
         sumError += error;
-        intSignal = (sumError*sleepTime)*Ki;
+        intSignal = (sumError)*Ki;
 
         //trial and error find an x value that works
         derSignal = ((error-prevError)/sleepTime)*Kd;
@@ -114,13 +114,13 @@ while(true){
         set_motor(2, -60);
 
         //when it reaches the intersections
-    }else if((error>-20)&&(error<20)&&First==0&&sum>5){
+    }else if((error>-20)&&(error<20)&&First==0&&sum>10){
         //Proportional Signal
         propSignal = (error)*Kp;
         propSignal=(propSignal/160)*200;
         //Integral Signal
         sumError += error;
-        intSignal = (sumError*sleepTime)*Ki;
+        intSignal = (sumError)*Ki;
 
         //trial and error find an x value that works
         derSignal = ((error-prevError)/sleepTime)*Kd;
@@ -129,11 +129,11 @@ while(true){
         set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
         // left wheel
         set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
-    }else if(((errorL)>errorR+7)&&First==0){
+    }else if(((errorL)>errorR+1)&&First==0){
         //turns90 left
         set_motor(2, 70);
         set_motor(1, -40);
-    }else if(((errorL+7)<errorR)&&First==0){
+    }else if(((errorL+1)<errorR)&&First==0){
         //turns90 right
         set_motor(2, -40);
         set_motor(1, 70);
