@@ -107,7 +107,7 @@ while(true){
         set_motor(1, minSpeed  - (propSignal + IntSignal + DerSignal));
         // left wheel
         set_motor(2, minSpeed + (propSignal + IntSignal + DerSignal));
-    }else if(First==1){
+    }else if(First==1){ //Do we need this, this could be causing the initial spin
         //turns until line is found.
         set_motor(1, -50);
         set_motor(2, 40);
