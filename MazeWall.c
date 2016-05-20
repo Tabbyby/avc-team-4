@@ -19,10 +19,7 @@ int First=1;
 double sleepTime = 0.1;
 
 //Variables
-int w;
 int sum;        //measure of whiteness
-int errorR;     //error Rigth
-int errorL;     //error left
 int error;        //tot error
 
 int prevError=0;
@@ -50,7 +47,26 @@ int main(){
 //    //Prints read digital value
 //    printf("%d\n",digital_sensor_reading);
     //Waits for 0.5 seconds (500000 microseconds)
+    prevError=error;
     int error = right -  left;
-    if (error)
+    porpSignal=error*kp;
+    proprSignal=((propSignal/300)*100);
+    derSignal(((error-prevError)/sleepTime)*kd);
+    if(error!=0){
+        set_motor(1,minSpeed+(proprSignal+derSignal));
+        set_motor(2,minSpeed-(proprSignal+derSignal));
+    }else if(left>right){
+        set_motor(1,50;
+        set_motor(2,-40);
+    }else if(left<right){
+        set_motor(1,-40;
+        set_motor(2,50);
+    }else if(left==0&&right==0){
+        set_motor(1,50;
+        set_motor(2,-40);
+    }
+    }
+    }
+    }
     Sleep(0,500000);
     return 0;}
