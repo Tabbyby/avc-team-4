@@ -15,9 +15,9 @@ extern "C" int receive_from_server(char message[24]);
 
 //Constants
 int minSpeed = 50;
-double Kp = 0.5;
+double Kp = 0.2;
 double Ki = 0;
-double Kd = 0;
+double Kd = 0.01;
 int First=1;
 double sleepTime = 0.1; 
 
@@ -40,14 +40,14 @@ int main(){
 //This sets up the RPi hardware and ensures everything is working properly
 init(0);
 
-connect_to_server("130.195.6.196", 1024);
+//connect_to_server("130.195.6.196", 1024);
 //sends message
-send_to_server("Please");
+//send_to_server("Please");
 //receives message 
-char message[24];
-receive_from_server(message);
-send_to_server(message);
-Sleep(0,1000);
+//char message[24];
+//receive_from_server(message);
+//send_to_server(message);
+//Sleep(0,1000);
  //right wheel
  set_motor(1, minSpeed);
  // left wheel
@@ -65,17 +65,17 @@ while(true){
     sum=0;
     for (int i=0; i<160; i++){
         w = get_pixel(i, 120, 3);
-        if(w > 100){
+        if(w > 120){
             errorL++;
         }
     }
 
-    for (int i=0; i<320; i++){ 
+    for (int i=160; i<320; i++){ 
      //this is calculating the sum for the whole width of pixels as opposed to just right, there is no range?
      // possibly the condition for the loop  should be
      //for (int i=0; i<320 && i>160; i++){
         w = get_pixel(i, 120, 3);
-        if(w > 100){
+        if(w > 120){
             errorR++;
         }
 
@@ -86,13 +86,14 @@ while(true){
 
     //rests for 0.1 seconds
     Sleep(0,1000);
-    sum=errorR+ErrorL;
+    sum=errorR+errorL;
 
     //when it reaches the secount quadrant
-    if((sum)>300){ //this could be made true when doing the first set of curves, causing it to break into the 
-        First=0;   //intersection code?
+    if((sum)>310){ //this could be made true when doing the first set of curves, causing it to break into the 
+       First=0;   //intersection code?
+	minSpeed=80;
     }
-    if((sum!=0)&&First==1){
+    if((sum>10)&&First==1){
         //Proportional Signal
         propSignal = (error)*Kp;
         propSignal=(propSignal/160)*200;
@@ -101,19 +102,19 @@ while(true){
         intSignal = (sumError*sleepTime)*Ki;
 
         //trial and error find an x value that works
-        derSignal = ((error-preverror)/sleepTime)*Kd;
+        derSignal = ((error-prevError)/sleepTime)*Kd;
 
         //right wheel
-        set_motor(1, minSpeed  - (propSignal + IntSignal + DerSignal));
+        set_motor(1, minSpeed  + (propSignal + intSignal + derSignal));
         // left wheel
-        set_motor(2, minSpeed + (propSignal + IntSignal + DerSignal));
+        set_motor(2, minSpeed - (propSignal + intSignal + derSignal));
     }else if(First==1){ //Do we need this, this could be causing the initial spin
         //turns until line is found.
         set_motor(1, -50);
-        set_motor(2, 40);
+        set_motor(2, -60);
 
         //when it reaches the intersections
-    }else if((error>-20)&&(error<20)){
+    }else if((error>-20)&&(error<20)&&First==0&&sum>5){
         //Proportional Signal
         propSignal = (error)*Kp;
         propSignal=(propSignal/160)*200;
@@ -122,24 +123,24 @@ while(true){
         intSignal = (sumError*sleepTime)*Ki;
 
         //trial and error find an x value that works
-        derSignal = ((error-preverror)/sleepTime)*Kd;
+        derSignal = ((error-prevError)/sleepTime)*Kd;
 
         //right wheel
-        set_motor(1, minSpeed  - (propSignal + IntSignal + DerSignal));
+        set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
         // left wheel
-        set_motor(2, minSpeed + (propSignal + IntSignal + DerSignal));
-    }else if((errorL)>errorR+10){
+        set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
+    }else if(((errorL)>errorR+7)&&First==0){
         //turns90 left
-        set_motor(2, (60);
-        set_motor(1, (-40);
-    }else if((errorL+10)<errorR){
+        set_motor(2, 70);
+        set_motor(1, -40);
+    }else if(((errorL+7)<errorR)&&First==0){
         //turns90 right
-        set_motor(2, (-40);
-        set_motor(1, (60);
+        set_motor(2, -40);
+        set_motor(1, 70);
     }else{
         //finds the line again
-        set_motor(1, 60);
-        set_motor(2, -60);
+        set_motor(1,-60);
+        set_motor(2, 60);
     }
 
 }
