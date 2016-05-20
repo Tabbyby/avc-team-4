@@ -21,7 +21,7 @@ double maxP = 160;	//maximum value of the proportional signal
 int Ki = 0;
 double maxI = 10;	//maximum value of the integral signal
 int Kd = 0;
-double maxD = 10;	//maximum derivitive signal
+double maxD = 50;	//maximum derivitive signal
 int sleepTime = 0.1;	//seconds
 int whiteThresh = 100	//the lowest whiteness value that is considered a white pixel
 
