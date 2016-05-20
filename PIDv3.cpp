@@ -89,8 +89,8 @@ while(true){
     sum=errorR+ErrorL;
 
     //when it reaches the secount quadrant
-    if((sum)>300){
-        First=0;
+    if((sum)>300){ //this could be made true when doing the first set of curves, causing it to break into the 
+        First=0;   //intersection code?
     }
     if((sum!=0)&&First==1){
         //Proportional Signal
