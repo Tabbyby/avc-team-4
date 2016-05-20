@@ -58,7 +58,7 @@ while(true){
     //Take picture with camera
     take_picture();
 
-    prevError = error;
+    prevError = error; 
     error=0;
     errorR=0;   
     errorL=0;   
@@ -70,7 +70,10 @@ while(true){
         }
     }
 
-    for (int i=0; i<320; i++){
+    for (int i=0; i<320; i++){ 
+     //this is calculating the sum for the whole width of pixels as opposed to just right, there is no range?
+     // possibly the condition for the loop  should be
+     //for (int i=0; i<320 && i>160; i++){
         w = get_pixel(i, 120, 3);
         if(w > 100){
             errorR++;
