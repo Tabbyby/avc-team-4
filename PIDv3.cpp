@@ -23,6 +23,8 @@ double sleepTime = 0.1;
 
 //Variables
 int w;  
+int r;
+int red;
 int sum;        //measure of whiteness
 int errorR;     //error Rigth
 int errorL;     //error left
@@ -63,10 +65,16 @@ while(true){
     errorR=0;   
     errorL=0;   
     sum=0;
+    r=0;
+    red=0;
     for (int i=0; i<160; i++){
         w = get_pixel(i, 120, 3);
+        r = get_pixel(i, 120, 255,0,0);
         if(w > 120){
             errorL++;
+        }else if(r>250){
+        	red++;	
+        }
         }
     }
 
@@ -75,8 +83,11 @@ while(true){
      // possibly the condition for the loop  should be
      //for (int i=0; i<320 && i>160; i++){
         w = get_pixel(i, 120, 3);
+        r = get_pixel(i, 120, 255,0,0);
         if(w > 120){
             errorR++;
+        }else if(r>250){
+        	red++;	
         }
 
     }
@@ -92,6 +103,10 @@ while(true){
     if((sum)>310){ //this could be made true when doing the first set of curves, causing it to break into the 
        First=0;   //intersection code
 	minSpeed=80;
+    }
+    if (red>310){
+    	First=2;
+    }
     }
     if((sum>10)&&First==1){
         //Proportional Signal
