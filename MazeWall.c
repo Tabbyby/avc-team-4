@@ -10,6 +10,7 @@ extern "C" int init(int d_lev);
 extern "C" int read_digital(int chan, int direct);
 extern "C" int select_IO(int chan, int direct);
 extern "C" int Sleep(int sec, int usec);
+
 extern "C" int set_motor(int motor , int speed);
 
 int minSpeed = 60;
