@@ -119,9 +119,9 @@ int main(){
 				//sums up the error from the center
 				error += (i-160);
 				counter++;
-				if(i>160){
+				if(i > 280){
 					rightSum++;
-				}else{
+				}else if(i < 40){
 					leftSum++;
 				}
 			}
