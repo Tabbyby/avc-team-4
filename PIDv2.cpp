@@ -17,9 +17,8 @@ extern "C" int receive_from_server(char message[24]);
 //Constants
 int speed = 40;		//base speed
 double Kp = 0.25;
-double Ki = 0;
-double Kd = 0;
-double sleepTime = 0.1;	//seconds
+double Kd = 0.05;
+double sleepTime = 0.05;	//seconds
 int whiteThresh = 100	//the lowest whiteness value that is considered a white pixel
 
 //Variables
