@@ -15,10 +15,10 @@ extern "C" int receive_from_server(char message[24]);
 
 
 //Constants
-int speed = 20;		//base speed
-double Kp = 0.1;
-double Kd = 0.05;
-double sleepTime = 0.05;	//seconds
+int speed = 50;		//base speed
+double Kp = 0.3;
+double Kd = 0.008;
+double sleepTime = 0.01;	//seconds
 int whiteThresh = 100;	//the lowest whiteness value that is considered a white pixel
 
 //Variables
@@ -65,7 +65,7 @@ int main(){
 			}
 		}
 		//rests for 0.1 seconds
-		Sleep(0,(1000000*sleepTime));
+		Sleep(0,(100000*sleepTime));
 
 
 		if(counter!=0){
