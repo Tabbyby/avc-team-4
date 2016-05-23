@@ -59,7 +59,7 @@ init(0);
 while(true){
     //Take picture with camera
     take_picture();
-
+    int display_picture(int 1,int 1);//displays pictures
     prevError = error; 
     error=0;
     errorR=0;   
