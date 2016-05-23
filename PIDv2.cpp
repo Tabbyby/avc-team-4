@@ -34,6 +34,10 @@ int derSignal;		//derivitive signal
 int rightSum;		//how many white pixels are on the right
 int leftSum;		//how many white pixels are on the left
 
+bool left = false;
+bool right = false;
+bool forward = true;
+
 //Opens the network gate
 void networkGate(){
 	//connects to server
@@ -50,7 +54,7 @@ void networkGate(){
 }
 
 //turns to the left until it finds a line
-void turnAround(){
+void turnLeft(){
 	int avError;
 	int w;
 	int counter = 0;
@@ -59,6 +63,9 @@ void turnAround(){
 		set_motor(1, -30);
 		set_motor(2, 30);
 		error = 0;
+
+		Sleep(0, 100000);
+		take_picture();
 		for (int i=0; i<320; i++){
 			w = get_pixel(i, 120, 3);
 			if(w > whiteThresh){
@@ -83,6 +90,9 @@ void turnRight(){
 		set_motor(1, 30);
 		set_motor(2, -30);
 		error = 0;
+
+		Sleep(0,100000);
+		take_picture();
 		for (int i=0; i<320; i++){
 			w = get_pixel(i, 120, 3);
 			if(w > whiteThresh){
@@ -129,8 +139,13 @@ int main(){
 		//rests for 0.1 seconds
 		Sleep(0,(100000*sleepTime));
 
-
 		if(counter > 0){
+			forward = true;
+		}else{
+			forward = false;
+		}
+		
+		if(forward || !left){
 			//Proportional Signal
 			//mean is sum of values divided by number of values
 			avError = error/counter;
@@ -145,12 +160,28 @@ int main(){
 			set_motor(2, speed - (propSignal + derSignal));
 			printf("\npropSignal %d", propSignal);
 			printf("\nderSignal %d", derSignal);
+		}else if(left || !(left && right && forward)){
+			turnLeft();
+		}else if(!left && right && !forward){
+			turnRight();
 		}else{
 			//goes backwards
-			set_motor(1, -40);
-			set_motor(2, -40);
+			set_motor(1, 0);
+			set_motor(2, 0);
+			return 0;
 		}
-	
-	return 0;
+
+
+		if(leftSum > 3){
+			left = true;
+		}else{
+			left = false;
+		}
+		if(rightSum > 3){
+			right = true;
+		}else{
+			right = false;
+		}
 	}
+	return 0;
 }
