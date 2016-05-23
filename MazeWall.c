@@ -46,8 +46,8 @@ int main(){
     int front = read_digital(0);
     int right = read_digital(2);
     int left = read_digital(4);
-//    //Prints read digital value
-//    printf("%d\n",digital_sensor_reading);
+    //Prints read digital value
+    //printf("%d\n",digital_sensor_reading);
     //Waits for 0.5 seconds (500000 microseconds)
     prevError=error;
     int error = right -  left;
@@ -67,8 +67,6 @@ int main(){
         set_motor(1,50); //left
         set_motor(2,-40); //right
     }
-    }
-    }
-    }
     Sleep(0,500000);
-    return 0;}
+    return 0;
+}
