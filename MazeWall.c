@@ -58,14 +58,14 @@ int main(){
         set_motor(1,minSpeed+(proprSignal+derSignal));
         set_motor(2,minSpeed-(proprSignal+derSignal));
     }else if(left>right){
-        set_motor(1,50;
-        set_motor(2,-40);
+        set_motor(1,50); //left
+        set_motor(2,-40); //right
     }else if(left<right){
-        set_motor(1,-40;
-        set_motor(2,50);
+        set_motor(1,-40); //left
+        set_motor(2,50); //right
     }else if(left==0&&right==0){
-        set_motor(1,50;
-        set_motor(2,-40);
+        set_motor(1,50); //left
+        set_motor(2,-40); //right
     }
     }
     }
