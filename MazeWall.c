@@ -38,9 +38,9 @@ int main(){
     //everything is working correctly
     init(0);
     //sets digital pin 0 as an input pin
-    int select_IO(0, 0);
-    int select_IO(2, 2);
-    int select_IO(4, 4);
+    int select_IO(0, 1);
+    int select_IO(2, 1);
+    int select_IO(4, 1);
     //We declare an integer variable to store the digital sensor data
     //Reads from digital pin 0 (D0)
     int front = read_digital(0);
