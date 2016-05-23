@@ -31,6 +31,9 @@ int propSignal;		//Proportional signal
 int preError;		//previous error signal
 int derSignal;		//derivitive signal
 
+int rightSum;		//how many white pixels are on the right
+int leftSum;		//how many white pixels are on the left
+
 //Opens the network gate
 void networkGate(){
 	//connects to server
@@ -108,19 +111,26 @@ int main(){
 		preError = avError;	//sets previous error as the previous error for this iteration of loop
 		counter = 0;		//resets counter
 		error = 0;		//resets error
+		rightSum = 0;		//resets rightSum
+		leftSum = 0;		//resets leftSum
 		for (int i=0; i<320; i++){
 			w = get_pixel(i, 120, 3);
 			if(w > whiteThresh){
 				//sums up the error from the center
 				error += (i-160);
 				counter++;
+				if(i>160){
+					rightSum++;
+				}else{
+					leftSum++;
+				}
 			}
 		}
 		//rests for 0.1 seconds
 		Sleep(0,(100000*sleepTime));
 
 
-		if(counter!=0){
+		if(counter > 0){
 			//Proportional Signal
 			//mean is sum of values divided by number of values
 			avError = error/counter;
