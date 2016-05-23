@@ -29,7 +29,7 @@ int avError = 0;	//sum of white pixel locations/number of white pixels
 
 int propSignal;
 int preError;
-derSignal;
+int derSignal;
 
 
 int main(){
