@@ -31,22 +31,74 @@ int propSignal;		//Proportional signal
 int preError;		//previous error signal
 int derSignal;		//derivitive signal
 
+//Opens the network gate
+void networkGate(){
+	//connects to server
+	connect_to_server("192.168.1.2", 1024);
+	//sends message
+   	send_to_server("Please");
+   	//receives password
+   	char message[24];
+   	receive_from_server(message);
+   	//sends password back to server
+   	send_to_server(message);
+   	//wait for door to open
+   	Sleep(0,3000);
+}
+
+//turns to the left until it finds a line
+void turnAround(){
+	int avError;
+	int w;
+	int counter = 0;
+	int error;
+	while((avError <= 10) && (avError >= -10)){
+		set_motor(1, -30);
+		set_motor(2, 30);
+		error = 0;
+		for (int i=0; i<320; i++){
+			w = get_pixel(i, 120, 3);
+			if(w > whiteThresh){
+				//sums up the error from the center
+				error += (i-160);
+				counter++;
+			}
+		}
+		avError = error/counter;
+	}
+	set_motor(1, 0);
+	set_motor(2, 0);
+}
+
+//turns to the right until it finds a line
+void turnRight(){
+	int avError;
+	int w;
+	int counter = 0;
+	int error;
+	while((avError <= 10) && (avError >= -10)){
+		set_motor(1, 30);
+		set_motor(2, -30);
+		error = 0;
+		for (int i=0; i<320; i++){
+			w = get_pixel(i, 120, 3);
+			if(w > whiteThresh){
+				//sums up the error from the center
+				error += (i-160);
+				counter++;
+			}
+		}
+		avError = error/counter;
+	}
+	set_motor(1, 0);
+	set_motor(2, 0);
+}
 
 int main(){
 	//This sets up the RPi hardware and ensures everything is working properly
 	init(0);
 	
-	//connects to server
-	//connect_to_server("192.168.1.2", 1024);
-	//sends message
-   	//send_to_server("Please");
-   	//receives password
-   	//char message[24];
-   	//receive_from_server(message);
-   	//sends password back to server
-   	//send_to_server(message);
-   	//wait for door to open
-   	//Sleep(0,3000);
+	//networkGate();
 
 	//infinite loop for testing purposes
 	while(true){
@@ -87,32 +139,8 @@ int main(){
 			//goes backwards
 			set_motor(1, -40);
 			set_motor(2, -40);
-			printf("FAIL");
 		}
 	
 	return 0;
 	}
-}
-
-void turnAround(){
-	int avError;
-	int w;
-	int counter = 0;
-	int error;
-	while((avError <= 10) && (avError >= -10)){
-		set_motor(1, -30);
-		set_motor(2, 30);
-		error = 0;
-		for (int i=0; i<320; i++){
-			w = get_pixel(i, 120, 3);
-			if(w > whiteThresh){
-				//sums up the error from the center
-				error += (i-160);
-				counter++;
-			}
-		}
-		avError = error/counter;
-	}
-	set_motor(1, 0);
-	set_motor(2, 0);
 }
