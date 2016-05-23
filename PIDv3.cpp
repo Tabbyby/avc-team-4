@@ -79,9 +79,8 @@ while(true){
     }
 
     for (int i=160; i<320; i++){ 
-     //this is calculating the sum for the whole width of pixels as opposed to just right, there is no range?
-     // possibly the condition for the loop  should be
-     //for (int i=0; i<320 && i>160; i++){
+     //there was a problem before where the range for this for loop was incorrect, but now it goes 
+     //corectly from 160-320, reading the pixels in this range. 
         w = get_pixel(i, 120, 3);
         r = get_pixel(i, 120, 255,0,0);
         if(w > 120){
