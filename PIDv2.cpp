@@ -15,8 +15,8 @@ extern "C" int receive_from_server(char message[24]);
 
 
 //Constants
-int speed = 90;		//maximum speed of any one wheel
-double Kp = 40;
+int speed = 40;		//base speed
+double Kp = 0.25;
 double Ki = 0;
 double Kd = 0;
 double sleepTime = 0.1;	//seconds
@@ -38,16 +38,16 @@ int main(){
 	init(0);
 	
 	//connects to server
-	connect_to_server("192.168.1.2", 1024);
+	//connect_to_server("192.168.1.2", 1024);
 	//sends message
-   	send_to_server("Please");
+   	//send_to_server("Please");
    	//receives password
-   	char message[24];
-   	receive_from_server(message);
+   	//char message[24];
+   	//receive_from_server(message);
    	//sends password back to server
-   	send_to_server(message);
+   	//send_to_server(message);
    	//wait for door to open
-   	Sleep(0,3000);
+   	//Sleep(0,3000);
 
 	//infinite loop for testing purposes
 	while(true){
