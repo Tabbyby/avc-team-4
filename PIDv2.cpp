@@ -34,9 +34,9 @@ int derSignal;		//derivitive signal
 int rightSum;		//how many white pixels are on the right
 int leftSum;		//how many white pixels are on the left
 
-bool left = false;
-bool right = false;
-bool forward = true;
+bool left = false;	//whether or not there is a path on the left
+bool right = false;	//whether or not there is a path on the right
+bool forward = true;	//whether or not there is a path ahead
 
 //Opens the network gate
 void networkGate(){
@@ -111,6 +111,8 @@ int main(){
 	//This sets up the RPi hardware and ensures everything is working properly
 	init(0);
 	
+	//opens the network gate
+	//uncomment to use
 	//networkGate();
 
 	//infinite loop for testing purposes
@@ -139,6 +141,7 @@ int main(){
 		//rests for 0.1 seconds
 		Sleep(0,(100000*sleepTime));
 
+		//stores whether there is a white line ahead
 		if(counter > 0){
 			forward = true;
 		}else{
@@ -146,6 +149,8 @@ int main(){
 		}
 		
 		if(forward || !left){
+			//goes forward following the line
+
 			//Proportional Signal
 			//mean is sum of values divided by number of values
 			avError = error/counter;
@@ -160,23 +165,30 @@ int main(){
 			set_motor(2, speed - (propSignal + derSignal));
 			printf("\npropSignal %d", propSignal);
 			printf("\nderSignal %d", derSignal);
-		}else if(left || !(left && right && forward)){
+		}else if(left){
+			//}else if(left || (!left && !right && !forward)){
+			//Turns to the left until it centers on a line
 			turnLeft();
 		}else if(!left && right && !forward){
+			//Turns to the right until it centers on a line
 			turnRight();
 		}else{
-			//goes backwards
+			//stops
+			//for now should stop if it hits a dead end or reads no white pixels
 			set_motor(1, 0);
 			set_motor(2, 0);
 			return 0;
 		}
 
 
+		//initialise leftSum and rightSum at end of loop so that if it reads black
+		//it can use leftSum and rightSum from when it still saw the white line
 		if(leftSum > 3){
 			left = true;
 		}else{
 			left = false;
 		}
+
 		if(rightSum > 3){
 			right = true;
 		}else{
