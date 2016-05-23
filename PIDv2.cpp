@@ -15,11 +15,11 @@ extern "C" int receive_from_server(char message[24]);
 
 
 //Constants
-int speed = 40;		//base speed
-double Kp = 0.25;
+int speed = 20;		//base speed
+double Kp = 0.1;
 double Kd = 0.05;
 double sleepTime = 0.05;	//seconds
-int whiteThresh = 100	//the lowest whiteness value that is considered a white pixel
+int whiteThresh = 100;	//the lowest whiteness value that is considered a white pixel
 
 //Variables
 int w;			//measure of whiteness
@@ -91,6 +91,7 @@ int main(){
 		}
 	
 	return 0;
+	}
 }
 
 void turnAround(){
