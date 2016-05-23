@@ -38,14 +38,14 @@ int main(){
     //everything is working correctly
     init(0);
     //sets digital pin 0 as an input pin
-    int select_IO(0, 1);
-    int select_IO(2, 1);
-    int select_IO(4, 1);
+    int select_IO(0, 1); //front sensor 
+    int select_IO(2, 1); //right sensor
+    int select_IO(4, 1); //left sensor
     //We declare an integer variable to store the digital sensor data
     //Reads from digital pin 0 (D0)
     int front = read_digital(0);
-    int right = read_digital(1);
-    int left = read_digital(2);
+    int right = read_digital(2);
+    int left = read_digital(4);
 //    //Prints read digital value
 //    printf("%d\n",digital_sensor_reading);
     //Waits for 0.5 seconds (500000 microseconds)
