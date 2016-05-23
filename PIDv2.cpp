@@ -85,9 +85,17 @@ int main(){
 			set_motor(1, speed + (propSignal + derSignal));
 			set_motor(2, speed - (propSignal + derSignal));
 		}else{
+			//goes backwards
 			set_motor(1, -40);
 			set_motor(2, -40);
+			printf("FAIL");
 		}
 	
 	return 0;
 }
+
+//int turnAround(){
+//	while((avError <= 10) && (avError >= -10)){
+//		
+//	}
+//}
