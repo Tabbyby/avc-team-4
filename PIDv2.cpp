@@ -27,9 +27,9 @@ int error;		//sum of white pixel locations
 int counter;		//number of "white" pixels
 int avError = 0;	//sum of white pixel locations/number of white pixels
 
-int propSignal;
-int preError;
-int derSignal;
+int propSignal;		//Proportional signal
+int preError;		//previous error signal
+int derSignal;		//derivitive signal
 
 
 int main(){
@@ -52,37 +52,37 @@ int main(){
 	while(true){
 		//Take picture with camera
 		take_picture();
-		
-		preError = avError;
-		counter = 0;
-		error = 0;
+
+		preError = avError;	//sets previous error as the previous error for this iteration of loop
+		counter = 0;		//resets counter
+		error = 0;		//resets error
 		for (int i=0; i<320; i++){
 			w = get_pixel(i, 120, 3);
 			if(w > whiteThresh){
+				//sums up the error from the center
 				error += (i-160);
 				counter++;
 			}
 		}
 		//rests for 0.1 seconds
 		Sleep(0,(1000000*sleepTime));
-		
-		
+
+
 		if(counter!=0){
 			//Proportional Signal
+			//mean is sum of values divided by number of values
 			avError = error/counter;
 			propSignal = avError*Kp;
-			
+
 			//Derivitive Signal
-			if(preError == 0){
-				//if there is not previous error, set derSignal to 0
-				preError = avError;
-			}
 			//derivitive is change in error/change in time
 			derSignal = ((avError - preError)/sleepTime)*Kd;
 			
 			//sets motors
 			set_motor(1, speed + (propSignal + derSignal));
 			set_motor(2, speed - (propSignal + derSignal));
+			printf("\npropSignal %d", propSignal);
+			printf("\nderSignal %d", derSignal);
 		}else{
 			//goes backwards
 			set_motor(1, -40);
@@ -93,8 +93,25 @@ int main(){
 	return 0;
 }
 
-//int turnAround(){
-//	while((avError <= 10) && (avError >= -10)){
-//		
-//	}
-//}
+void turnAround(){
+	int avError;
+	int w;
+	int counter = 0;
+	int error;
+	while((avError <= 10) && (avError >= -10)){
+		set_motor(1, -30);
+		set_motor(2, 30);
+		error = 0;
+		for (int i=0; i<320; i++){
+			w = get_pixel(i, 120, 3);
+			if(w > whiteThresh){
+				//sums up the error from the center
+				error += (i-160);
+				counter++;
+			}
+		}
+		avError = error/counter;
+	}
+	set_motor(1, 0);
+	set_motor(2, 0);
+}
