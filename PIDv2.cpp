@@ -36,7 +36,7 @@ int leftSum;		//how many white pixels are on the left
 
 bool left = false;	//whether or not there is a path on the left
 bool right = false;	//whether or not there is a path on the right
-bool forward = true;	//whether or not there is a path ahead
+bool forward = false;	//whether or not there is a path ahead
 
 //Opens the network gate
 void networkGate(){
@@ -55,13 +55,20 @@ void networkGate(){
 
 //turns to the left until it finds a line
 void turnLeft(){
-	int avError;
+
+	printf("Turning Left");
+
+	int avError = 1;
 	int w;
 	int counter = 0;
 	int error;
-	while((avError >= 3) || (avError <= -3)){
-		set_motor(1, -30);
-		set_motor(2, 30);
+
+	set_motor(1, -50);
+	set_motor(2, 50);
+	Sleep(1,0);
+	while(avError != 0){
+		set_motor(1, -50);
+		set_motor(2, 50);
 		error = 0;
 
 		Sleep(0, 100000);
@@ -75,6 +82,7 @@ void turnLeft(){
 			}
 		}
 		avError = error/counter;
+		printf("\n avError: %d", avError);
 	}
 	set_motor(1, 0);
 	set_motor(2, 0);
@@ -82,13 +90,20 @@ void turnLeft(){
 
 //turns to the right until it finds a line
 void turnRight(){
-	int avError;
+	
+	printf("\n Turning Right");
+	
+	int avError = 1;
 	int w;
 	int counter = 0;
 	int error;
-	while((avError >= 3) || (avError <= -3)){
-		set_motor(1, 30);
-		set_motor(2, -30);
+
+	set_motor(1, 50);
+	set_motor(2, -50);
+	Sleep(1,0);
+	while(avError != 0){
+		set_motor(1, 50);
+		set_motor(2, -50);
 		error = 0;
 
 		Sleep(0,100000);
@@ -102,6 +117,7 @@ void turnRight(){
 			}
 		}
 		avError = error/counter;
+		printf("\n avError: %d", avError);
 	}
 	set_motor(1, 0);
 	set_motor(2, 0);
@@ -112,7 +128,6 @@ int main(){
 	init(0);
 	
 	//opens the network gate
-	//uncomment to use
 	//networkGate();
 
 	//infinite loop for testing purposes
@@ -147,9 +162,20 @@ int main(){
 		}else{
 			forward = false;
 		}
-		
-		if(forward || !left){
+
+		if(forward){
+			printf("\n forward path");
+		}
+		if(left){
+			printf("\n left path");
+		}
+		if(right){
+			printf("\n right path");
+		}
+
+		if(forward && !left){
 			//goes forward following the line
+			printf("\n Continue Forward");
 
 			//Proportional Signal
 			//mean is sum of values divided by number of values
@@ -177,6 +203,7 @@ int main(){
 			//for now should stop if it hits a dead end or reads no white pixels
 			set_motor(1, 0);
 			set_motor(2, 0);
+			printf("\n ABORT ABORT ABORT ABORT")
 			return 0;
 		}
 
