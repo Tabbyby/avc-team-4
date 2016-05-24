@@ -59,7 +59,7 @@ void turnLeft(){
 	int w;
 	int counter = 0;
 	int error;
-	while((avError <= 10) && (avError >= -10)){
+	while((avError >= 3) || (avError <= -3)){
 		set_motor(1, -30);
 		set_motor(2, 30);
 		error = 0;
@@ -86,7 +86,7 @@ void turnRight(){
 	int w;
 	int counter = 0;
 	int error;
-	while((avError <= 10) && (avError >= -10)){
+	while((avError >= 3) || (avError <= -3)){
 		set_motor(1, 30);
 		set_motor(2, -30);
 		error = 0;
