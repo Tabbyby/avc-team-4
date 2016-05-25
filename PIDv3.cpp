@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <time.h>
+#include <cstdlib>
+#include <signal.h>
 
 //these load specific methods from the ENGR101 library
 extern "C" int init(int d_lev);
@@ -46,125 +48,119 @@ void signal_callback_handler(int signum){
 
 int main(){
 	signal_callback_handler(2, signal_callback_handler);
-//This sets up the RPi hardware and ensures everything is working properly
-init(0);
+	//This sets up the RPi hardware and ensures everything is working properly
+	init(0);
+	
+	//connect_to_server("130.195.6.196", 1024);
+	//sends message
+	//send_to_server("Please");
+	//receives message 
+	//char message[24];
+	//receive_from_server(message);
+	//send_to_server(message);
+	//Sleep(0,1000);
+	 //right wheel
+	 set_motor(1, minSpeed);
+	 // left wheel
+	 set_motor(2, minSpeed);
+	
+	//infinite loop for testing purposes
+	while(true){
+		//Take picture with camera
+		take_picture();
+		//int display_picture(int 1,int 1);//displays pictures
+		prevError = error;
+		error=0;
+		errorR=0;
+		errorL=0;
+		sum=0;
+		r=0;
+		red=0;
+		for (int i=0; i<160; i++){
+		    	w = get_pixel(i, 120, 3);
+		        r = get_pixel(i, 120, 255,0,0);
+		        if(w > 120){
+		        	errorL++;
+		        }else if(r>250){
+		        	red++;
+		        }
+		}
 
-//connect_to_server("130.195.6.196", 1024);
-//sends message
-//send_to_server("Please");
-//receives message 
-//char message[24];
-//receive_from_server(message);
-//send_to_server(message);
-//Sleep(0,1000);
- //right wheel
- set_motor(1, minSpeed);
- // left wheel
- set_motor(2, minSpeed);
+		for (int i=160; i<320; i++){
+			//there was a problem before where the range for this for loop was incorrect, but now it goes
+			//corectly from 160-320, reading the pixels in this range.
+			w = get_pixel(i, 120, 3);
+			r = get_pixel(i, 120, 255,0,0);
+			if(w > 120){
+				errorR++;
+			}else if(r>250){
+				red++;
+			}
+		}
 
-//infinite loop for testing purposes
-while(true){
-    //Take picture with camera
-    take_picture();
-    //int display_picture(int 1,int 1);//displays pictures
-    prevError = error; 
-    error=0;
-    errorR=0;   
-    errorL=0;   
-    sum=0;
-    r=0;
-    red=0;
-    for (int i=0; i<160; i++){
-        w = get_pixel(i, 120, 3);
-        r = get_pixel(i, 120, 255,0,0);
-        if(w > 120){
-            errorL++;
-        }else if(r>250){
-        	red++;	
-        }
-        }
-    }
+		error=errorR-errorL;
+		//rests for 0.1 seconds
+		Sleep(0,1000);
+		sum=errorR+errorL;
+		
+		//when it reaches the secount quadrant
+		if((sum)>310){ //this could be made true when doing the first set of curves, causing it to break into the 
+			First=0;   //intersection code
+			minSpeed=80;
+		}
+		if (red>310){
+			First=2;
+		}
+		if((sum>10)&&First==1){
+			//Proportional Signal
+			propSignal = (error)*Kp;
+			propSignal=(propSignal/160)*200;
+			//Integral Signal
+			sumError += error;
+			intSignal = (sumError)*Ki;
 
-    for (int i=160; i<320; i++){ 
-     //there was a problem before where the range for this for loop was incorrect, but now it goes 
-     //corectly from 160-320, reading the pixels in this range. 
-        w = get_pixel(i, 120, 3);
-        r = get_pixel(i, 120, 255,0,0);
-        if(w > 120){
-            errorR++;
-        }else if(r>250){
-        	red++;	
-        }
+			//trial and error find an x value that works
+			derSignal = ((error-prevError)/sleepTime)*Kd;
 
-    }
+			//right wheel
+			set_motor(1, minSpeed  + (propSignal + intSignal + derSignal));
+			// left wheel
+			set_motor(2, minSpeed - (propSignal + intSignal + derSignal));
+		}else if(First==1){ //Do we need this, this could be causing the initial spin
+			//turns until line is found.
+			set_motor(1, -50);
+			set_motor(2, -60);
 
-    error=errorR-errorL;
-    
+			//when it reaches the intersections
+		}else if((error>-20)&&(error<20)&&First==0&&sum>10){
+			//Proportional Signal
+			propSignal = (error)*Kp;
+			propSignal=(propSignal/160)*200;
+			//Integral Signal
+			sumError += error;
+			intSignal = (sumError)*Ki;
 
-    //rests for 0.1 seconds
-    Sleep(0,1000);
-    sum=errorR+errorL;
+			//trial and error find an x value that works
+			derSignal = ((error-prevError)/sleepTime)*Kd;
 
-    //when it reaches the secount quadrant
-    if((sum)>310){ //this could be made true when doing the first set of curves, causing it to break into the 
-       First=0;   //intersection code
-	minSpeed=80;
-    }
-    if (red>310){
-    	First=2;
-    }
-    }
-    if((sum>10)&&First==1){
-        //Proportional Signal
-        propSignal = (error)*Kp;
-        propSignal=(propSignal/160)*200;
-        //Integral Signal
-        sumError += error;
-        intSignal = (sumError)*Ki;
+			//right wheel
+			set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
+			// left wheel
+			set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
+		}else if(((errorL)>errorR+1)&&First==0){
+			//turns90 left
+			set_motor(2, 70);
+			set_motor(1, -40);
+		}else if(((errorL+1)<errorR)&&First==0){
+			//turns90 right
+			set_motor(2, -40);
+			set_motor(1, 70);
+		}else{
+			//finds the line again
+			set_motor(1,-60);
+			set_motor(2, 60);
+		}
 
-        //trial and error find an x value that works
-        derSignal = ((error-prevError)/sleepTime)*Kd;
-
-        //right wheel
-        set_motor(1, minSpeed  + (propSignal + intSignal + derSignal));
-        // left wheel
-        set_motor(2, minSpeed - (propSignal + intSignal + derSignal));
-    }else if(First==1){ //Do we need this, this could be causing the initial spin
-        //turns until line is found.
-        set_motor(1, -50);
-        set_motor(2, -60);
-
-        //when it reaches the intersections
-    }else if((error>-20)&&(error<20)&&First==0&&sum>10){
-        //Proportional Signal
-        propSignal = (error)*Kp;
-        propSignal=(propSignal/160)*200;
-        //Integral Signal
-        sumError += error;
-        intSignal = (sumError)*Ki;
-
-        //trial and error find an x value that works
-        derSignal = ((error-prevError)/sleepTime)*Kd;
-
-        //right wheel
-        set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
-        // left wheel
-        set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
-    }else if(((errorL)>errorR+1)&&First==0){
-        //turns90 left
-        set_motor(2, 70);
-        set_motor(1, -40);
-    }else if(((errorL+1)<errorR)&&First==0){
-        //turns90 right
-        set_motor(2, -40);
-        set_motor(1, 70);
-    }else{
-        //finds the line again
-        set_motor(1,-60);
-        set_motor(2, 60);
-    }
-
-}
-return 0;
-
+	}
+	return 0;
 }
