@@ -38,6 +38,13 @@ bool left = false;	//whether or not there is a path on the left
 bool right = false;	//whether or not there is a path on the right
 bool forward = false;	//whether or not there is a path ahead
 
+//Prevents spazzing upon termination of program
+void signal_callback_handler(int signum){
+	set_motor(1, 0);
+	set_motor(2,0);
+	exit(signum);
+}
+
 //Opens the network gate
 void networkGate(){
 	//connects to server
@@ -126,7 +133,9 @@ void turnRight(){
 int main(){
 	//This sets up the RPi hardware and ensures everything is working properly
 	init(0);
-	
+
+	signal_callback_handler(2, signal_callback_handler);
+
 	//opens the network gate
 	//networkGate();
 
