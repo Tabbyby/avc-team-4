@@ -38,7 +38,14 @@ int sumError;       //the sum of all previous errors
 double derSignal;   //the derivitive signal 
 double intSignal;
 
+void signal_callback_handler(int signum){
+	set_motor(1,0);
+	set_motor(2,0);
+	exit(signum);
+}
+
 int main(){
+	signal_callback_handler(2, signal_callback_handler);
 //This sets up the RPi hardware and ensures everything is working properly
 init(0);
 
