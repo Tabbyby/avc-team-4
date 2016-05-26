@@ -54,7 +54,7 @@ while(1){
     int error = right -  left;
     propSignal=error*Kp;
     propSignal=((propSignal/300)*100);
-    derSignal(((error-prevError)/sleepTime)*Kd);
+    derSignal = (((error-prevError)/sleepTime)*Kd);
     if(sum>10||sum<-10){
         set_motor(1,minSpeed+(propSignal+derSignal));
         set_motor(2,minSpeed-(propSignal+derSignal));
