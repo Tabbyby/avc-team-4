@@ -34,7 +34,7 @@ double intSignal;
 
 
 int main(){
-    //This sets up the RPi hardware and ensures
+   //This sets up the RPi hardware and ensures
     //everything is working correctly
     init(0);
     //sets digital pin 0 as an input pin
@@ -43,7 +43,7 @@ int main(){
     int select_IO(4, 1); //left sensor
     //We declare an integer variable to store the digital sensor data
     //Reads from digital pin 0 (D0)
-    int front = read_digital(0);
+   // int front = read_digital(0);
     int right = read_digital(2);
     int left = read_digital(4);
 //    //Prints read digital value
@@ -51,24 +51,24 @@ int main(){
     //Waits for 0.5 seconds (500000 microseconds)
     prevError=error;
     int error = right -  left;
-    porpSignal=error*kp;
-    proprSignal=((propSignal/300)*100);
-    derSignal(((error-prevError)/sleepTime)*kd);
-    if(error!=0){
-        set_motor(1,minSpeed+(proprSignal+derSignal));
-        set_motor(2,minSpeed-(proprSignal+derSignal));
-    }else if(left>right){
+    propSignal=error*Kp;
+    propSignal=((propSignal/300)*100);
+    derSignal(((error-prevError)/sleepTime)*Kd);
+    if(sum>10||sum<-10){
+        set_motor(1,minSpeed+(propSignal+derSignal));
+        set_motor(2,minSpeed-(propSignal+derSignal));
+    }else if(right==0){
         set_motor(1,50); //left
         set_motor(2,-40); //right
-    }else if(left<right){
+    }else if(left==0){
         set_motor(1,-40); //left
         set_motor(2,50); //right
     }else if(left==0&&right==0){
         set_motor(1,50); //left
         set_motor(2,-40); //right
     }
-    }
-    }
-    }
+    
+    
+    
     Sleep(0,500000);
     return 0;}
