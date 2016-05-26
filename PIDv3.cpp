@@ -23,8 +23,6 @@ double sleepTime = 0.1;
 
 //Variables
 int w;  
-int r;
-int red;
 int sum;        //measure of whiteness
 int errorR;     //error Rigth
 int errorL;     //error left
@@ -59,34 +57,25 @@ init(0);
 while(true){
     //Take picture with camera
     take_picture();
-    int display_picture(int 1,int 1);//displays pictures
     prevError = error; 
     error=0;
     errorR=0;   
     errorL=0;   
     sum=0;
-    r=0;
-    red=0;
     for (int i=0; i<160; i++){
         w = get_pixel(i, 120, 3);
-        r = get_pixel(i, 120, 255,0,0);
         if(w > 120){
             errorL++;
-        }else if(r>250){
-        	red++;	
-        }
         }
     }
 
     for (int i=160; i<320; i++){ 
-     //there was a problem before where the range for this for loop was incorrect, but now it goes 
-     //corectly from 160-320, reading the pixels in this range. 
+     //this is calculating the sum for the whole width of pixels as opposed to just right, there is no range?
+     // possibly the condition for the loop  should be
+     //for (int i=0; i<320 && i>160; i++){
         w = get_pixel(i, 120, 3);
-        r = get_pixel(i, 120, 255,0,0);
         if(w > 120){
             errorR++;
-        }else if(r>250){
-        	red++;	
         }
 
     }
@@ -99,13 +88,13 @@ while(true){
     sum=errorR+errorL;
 
     //when it reaches the secount quadrant
-    if((sum)>310){ //this could be made true when doing the first set of curves, causing it to break into the 
-       First=0;   //intersection code
+    if((sum)>310){
+	 //this could be made true when doing the first set of curves, causing it to break into the 
+      	 First=0; 
+	
+	
+  //intersection code
 	minSpeed=80;
-    }
-    if (red>310){
-    	First=2;
-    }
     }
     if((sum>10)&&First==1){
         //Proportional Signal
@@ -128,7 +117,7 @@ while(true){
         set_motor(2, -60);
 
         //when it reaches the intersections
-    }else if((error>-20)&&(error<20)&&First==0&&sum>10){
+    }else if((error>-20)&&(error<20)&&First==0&&sum>3){
         //Proportional Signal
         propSignal = (error)*Kp;
         propSignal=(propSignal/160)*200;
@@ -145,13 +134,14 @@ while(true){
         set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
     }else if(((errorL)>errorR+1)&&First==0){
         //turns90 left
-        set_motor(2, 70);
-        set_motor(1, -40);
-    }else if(((errorL+1)<errorR)&&First==0){
+       set_motor(2, 70);
+       set_motor(1, -40);
+    } else if(((errorL+1)<errorR)&&First==0){
         //turns90 right
         set_motor(2, -40);
         set_motor(1, 70);
-    }else{
+    }
+	else{
         //finds the line again
         set_motor(1,-60);
         set_motor(2, 60);
