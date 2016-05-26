@@ -54,7 +54,7 @@ int main(){
     porpSignal=error*kp;
     proprSignal=((propSignal/300)*100);
     derSignal(((error-prevError)/sleepTime)*kd);
-    if(left==right){
+    if(left!=right&&sum>30){
         set_motor(1,minSpeed+(proprSignal+derSignal));
         set_motor(2,minSpeed-(proprSignal+derSignal));
     }else if(right==0){
@@ -66,6 +66,10 @@ int main(){
     }else if(left==0&&right==0){
         set_motor(1,50); //left
         set_motor(2,-40); //right
+    }else if(left==right){
+        set_motor(1,40); //left
+        set_motor(2,40); //right  
+    }
     }
     Sleep(0,500000);
     return 0;
