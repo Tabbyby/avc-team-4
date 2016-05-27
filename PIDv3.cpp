@@ -8,6 +8,8 @@ extern "C" char get_pixel(int row,int col,int colour);
 extern "C" int Sleep(int sec, int usec);
 //extern "C" int ReadAnalog(int ch_adc);
 extern "C" int set_motor(int motor , int speed);
+extern "C" int read_analog(int ch_adc);
+extern "C" int select_IO(int chan, int direct);
 //network commands
 extern "C" int connect_to_server( char server_addr[15],int port);
 extern "C" int send_to_server(char message[24]);
@@ -23,6 +25,8 @@ double sleepTime = 0.1;
 
 //Variables
 int w;  
+int r;
+int red;
 int sum;        //measure of whiteness
 int errorR;     //error Rigth
 int errorL;     //error left
@@ -40,14 +44,16 @@ int main(){
 //This sets up the RPi hardware and ensures everything is working properly
 init(0);
 
-//connect_to_server("130.195.6.196", 1024);
+connect_to_server("130.195.6.196", 1024);
 //sends message
-//send_to_server("Please");
+send_to_server("Please");
 //receives message 
-//char message[24];
-//receive_from_server(message);
-//send_to_server(message);
-//Sleep(0,1000);
+char message[24];
+receive_from_server(message);
+send_to_server(message);
+ select_IO(0, 1); //front sensor
+ select_IO(2, 1); //right sensor
+ select_IO(4, 1); //left sensor
  //right wheel
  set_motor(1, minSpeed);
  // left wheel
@@ -62,8 +68,14 @@ while(true){
     errorR=0;   
     errorL=0;   
     sum=0;
+    red=0;
     for (int i=0; i<160; i++){
         w = get_pixel(i, 120, 3);
+        r=get_pixel(i,0,0,255);
+        if(r=255){
+        red++;
+        }
+        }
         if(w > 120){
             errorL++;
         }
@@ -74,6 +86,10 @@ while(true){
      // possibly the condition for the loop  should be
      //for (int i=0; i<320 && i>160; i++){
         w = get_pixel(i, 120, 3);
+        r=get_pixel(i,0,0,255);
+        if(r=255){
+        red++;
+        }
         if(w > 120){
             errorR++;
         }
@@ -95,6 +111,15 @@ while(true){
 	
   //intersection code
 	minSpeed=80;
+    }
+    if(red>300){
+    	Frist=2;
+    	minSpeed = 60;
+	Kp = 0.5;
+	Ki = 0.00;
+	Kd = 0.001;
+	error=0;
+    }
     }
     if((sum>10)&&First==1){
         //Proportional Signal
@@ -141,10 +166,26 @@ while(true){
         set_motor(2, -40);
         set_motor(1, 70);
     }
-	else{
+	else if(First==0){
         //finds the line again
         set_motor(1,-60);
         set_motor(2, 60);
+    }
+    if(Frist==2){
+    	int right=read_analog(2);
+    	int left=read_analog(4);
+    	prevError=error;
+    	error=right-left;
+    	propSignal=error*Kp;
+    	prorSignal=((propSignal/600)*100);
+    	derSignal=(((error-prevError)/sleepTime)*Kd);
+    	set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
+        // left wheel
+        set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
+    	
+    	
+    	
+    }
     }
 
 }
