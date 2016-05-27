@@ -20,7 +20,7 @@ int minSpeed = 60;
 double Kp = 0.237;
 double Ki = 0.00;
 double Kd = 0.072;
-int First=1;
+int First=2;
 double sleepTime = 0.1; 
 
 //Variables
@@ -44,14 +44,13 @@ int main(){
 //This sets up the RPi hardware and ensures everything is working properly
 init(0);
 
-connect_to_server("130.195.6.196", 1024);
+//connect_to_server("130.195.6.196", 1024);
 //sends message
-send_to_server("Please");
+//send_to_server("Please");
 //receives message 
-char message[24];
-receive_from_server(message);
-send_to_server(message);
- select_IO(0, 1); //front sensor
+//char message[24];
+//receive_from_server(message);
+//send_to_server(message);
  select_IO(2, 1); //right sensor
  select_IO(4, 1); //left sensor
  //right wheel
@@ -71,10 +70,9 @@ while(true){
     red=0;
     for (int i=0; i<160; i++){
         w = get_pixel(i, 120, 3);
-        r=get_pixel(i,0,0,255);
-        if(r=255){
+        r=get_pixel(i,120,0);
+        if(r>210){
         red++;
-        }
         }
         if(w > 120){
             errorL++;
@@ -86,8 +84,8 @@ while(true){
      // possibly the condition for the loop  should be
      //for (int i=0; i<320 && i>160; i++){
         w = get_pixel(i, 120, 3);
-        r=get_pixel(i,0,0,255);
-        if(r=255){
+        r=get_pixel(i,120,0);
+        if(r>210){
         red++;
         }
         if(w > 120){
@@ -110,17 +108,20 @@ while(true){
 	
 	
   //intersection code
-	minSpeed=80;
+	minSpeed=70;
     }
-    if(red>300){
-    	Frist=2;
+	int test=read_analog(2);
+	int test1=read_analog(4);
+    if(First==0&&test>400&&test1>400){
+    	First=2;
     	minSpeed = 60;
-	Kp = 0.5;
-	Ki = 0.00;
-	Kd = 0.001;
-	error=0;
+	
     }
-    }
+	if(First==2){
+	prevError=0;
+	break;
+	}
+    
     if((sum>10)&&First==1){
         //Proportional Signal
         propSignal = (error)*Kp;
@@ -165,30 +166,36 @@ while(true){
         //turns90 right
         set_motor(2, -40);
         set_motor(1, 70);
-    }
-	else if(First==0){
+    }else if(First==0){
         //finds the line again
         set_motor(1,-60);
         set_motor(2, 60);
     }
-    if(Frist==2){
+}
+while(1){
+	double kp=0.6;
+	double kd=0.01;	
     	int right=read_analog(2);
     	int left=read_analog(4);
-    	prevError=error;
     	error=right-left;
-    	propSignal=error*Kp;
-    	prorSignal=((propSignal/600)*100);
-    	derSignal=(((error-prevError)/sleepTime)*Kd);
+    	propSignal=error*kp;
+    	propSignal=((propSignal/600)*100);
+    	derSignal=(((error-prevError)/sleepTime)*kd);
+	prevError=error;
+	if(left<200&&right<200){
+	set_motor(1,-50);
+	set_motor(2,70);
+	}else{
     	set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
         // left wheel
         set_motor(2, minSpeed + (propSignal + intSignal + derSignal));
+    	}
     	
-    	
-    	
-    }
     }
 
-}
+     
+
+
 return 0;
 
 }
