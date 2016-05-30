@@ -182,9 +182,9 @@ while(1){
     	propSignal=((propSignal/600)*100);
     	derSignal=(((error-prevError)/sleepTime)*kd);
 	prevError=error;
-	if(left<200&&right<200){
+	if (front>300){
 	set_motor(1,-50);
-	set_motor(2,70);
+	set_motor(2,70);	
 	}else{
     	set_motor(1, minSpeed  - (propSignal + intSignal + derSignal));
         // left wheel
